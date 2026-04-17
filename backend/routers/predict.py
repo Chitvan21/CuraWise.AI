@@ -1,0 +1,24 @@
+from fastapi import APIRouter, HTTPException
+from models.schemas import SymptomRequest, PredictResponse
+from services import ml_service, data_service
+
+router = APIRouter()
+
+
+@router.post("", response_model=PredictResponse)
+def predict(request: SymptomRequest):
+    if len(request.symptoms) < 3:
+        raise HTTPException(
+            status_code=400,
+            detail="Please select at least 3 symptoms for accurate prediction",
+        )
+    disease, confidence = ml_service.predict(request.symptoms)
+    return PredictResponse(
+        disease=disease,
+        confidence=confidence,
+        description=data_service.get_desc(disease),
+        precautions=data_service.get_precautions(disease),
+        workout=data_service.get_workout(disease),
+        diets=data_service.get_diet(disease),
+        medications=data_service.get_medication(disease),
+    )
