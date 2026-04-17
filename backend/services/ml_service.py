@@ -19,11 +19,11 @@ def predict(symptoms: list[str]) -> tuple[str, float]:
     for symptom in symptoms:
         if symptom in symptoms_dict:
             input_vector[symptoms_dict[symptom]] = 1
-    predicted_index = _model.predict([input_vector])[0]
+    input_df = pd.DataFrame([input_vector], columns=_training_cols)
+    probas = _model.predict_proba(input_df)[0]
+    predicted_index = _model.predict(input_df)[0]
     disease = diseases_list[predicted_index]
-    decision_scores = _model.decision_function([input_vector])[0]
-    exp_scores = np.exp(decision_scores - np.max(decision_scores))
-    confidence = float(exp_scores[predicted_index] / exp_scores.sum() * 100)
+    confidence = float(probas[predicted_index] * 100)
     return disease, round(confidence, 1)
 
 

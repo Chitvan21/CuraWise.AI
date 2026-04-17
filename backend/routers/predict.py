@@ -5,7 +5,13 @@ from services import ml_service, data_service
 router = APIRouter()
 
 
-@router.post("", response_model=PredictResponse)
+@router.get("/symptoms")
+def get_symptoms():
+    from services.ml_service import get_symptoms_list
+    return {"symptoms": get_symptoms_list()}
+
+
+@router.post("/predict", response_model=PredictResponse)
 def predict(request: SymptomRequest):
     if len(request.symptoms) < 3:
         raise HTTPException(

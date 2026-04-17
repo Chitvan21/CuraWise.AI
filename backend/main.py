@@ -12,7 +12,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(predict.router, prefix="/api/predict")
+app.include_router(predict.router, prefix="/api")
 app.include_router(chat.router, prefix="/api/chat")
 app.include_router(report.router, prefix="/api/report")
 
