@@ -1,8 +1,11 @@
 import os
+import logging
 import jwt
 from jwt import PyJWKClient
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+logger = logging.getLogger(__name__)
 
 security = HTTPBearer()
 
@@ -39,5 +42,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-    except Exception:
+    except Exception as e:
+        logger.error("Token verification error: %s: %s", type(e).__name__, e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token verification failed")
