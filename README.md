@@ -2,6 +2,8 @@
 
 AI-powered health companion. Describe your symptoms, get a disease prediction, personalized recommendations, and a downloadable PDF report — all backed by a Random Forest classifier and Groq LLMs.
 
+**Live demo: [curawise-ai.vercel.app](https://curawise-ai.vercel.app/)**
+
 ---
 
 ## Features
