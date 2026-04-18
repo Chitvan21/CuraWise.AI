@@ -42,13 +42,13 @@ export default function Predict() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white px-4 py-12">
+    <div className="min-h-screen bg-[#020d0e] text-white px-4 py-12">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-xl font-semibold text-white mb-1">Disease Prediction</h1>
         <p className="text-gray-500 text-sm mb-8">Select your symptoms to get an AI-powered diagnosis.</p>
 
         {/* Symptom selector card */}
-        <div className="bg-[#0d1117] border border-gray-800 rounded-xl p-5 mb-4">
+        <div className="bg-[#091518] border border-gray-800 rounded-xl p-5 mb-4">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-white font-medium">Symptoms</span>
             <span className="text-xs text-gray-600">{symptoms.length} selected</span>
@@ -60,7 +60,7 @@ export default function Predict() {
               onClick={() => setActiveTab('search')}
               className={`text-xs font-medium pb-2 transition-colors ${
                 activeTab === 'search'
-                  ? 'text-white border-b-2 border-indigo-500'
+                  ? 'text-white border-b-2 border-teal-500'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
@@ -70,7 +70,7 @@ export default function Predict() {
               onClick={() => setActiveTab('browse')}
               className={`text-xs font-medium pb-2 transition-colors ${
                 activeTab === 'browse'
-                  ? 'text-white border-b-2 border-indigo-500'
+                  ? 'text-white border-b-2 border-teal-500'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
@@ -87,10 +87,10 @@ export default function Predict() {
                 onFocus={() => setDropdownOpen(true)}
                 onBlur={() => setTimeout(() => setDropdownOpen(false), 150)}
                 placeholder="Type to search symptoms..."
-                className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors"
+                className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors"
               />
               {dropdownOpen && filtered.length > 0 && (
-                <div className="absolute z-50 w-full bg-[#0d1117] border border-gray-800 rounded-lg mt-1 max-h-60 overflow-y-auto">
+                <div className="absolute z-50 w-full bg-[#091518] border border-gray-800 rounded-lg mt-1 max-h-60 overflow-y-auto">
                   {filtered.map(s => (
                     <div
                       key={s}
@@ -114,7 +114,7 @@ export default function Predict() {
                 value={browseFilter}
                 onChange={e => setBrowseFilter(e.target.value)}
                 placeholder="Filter symptoms..."
-                className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors mb-3"
+                className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors mb-3"
               />
               <div className="max-h-56 overflow-y-auto grid grid-cols-3 gap-1.5">
                 {allSymptoms
@@ -131,8 +131,8 @@ export default function Predict() {
                       }}
                       className={`px-2 py-1.5 rounded-md text-xs text-left truncate border transition-colors ${
                         symptoms.includes(s)
-                          ? 'bg-indigo-600/20 text-indigo-300 border-indigo-500/30'
-                          : 'bg-[#030712] border-gray-800 text-gray-400 hover:text-white hover:border-gray-600'
+                          ? 'bg-teal-600/20 text-teal-300 border-teal-500/30'
+                          : 'bg-[#020d0e] border-gray-800 text-gray-400 hover:text-white hover:border-gray-600'
                       }`}
                       title={s.replace(/_/g, ' ')}
                     >
@@ -149,12 +149,12 @@ export default function Predict() {
               {symptoms.map(s => (
                 <span
                   key={s}
-                  className="bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 text-xs px-2.5 py-1 rounded-md flex items-center gap-1.5"
+                  className="bg-teal-600/20 text-teal-300 border border-teal-500/30 text-xs px-2.5 py-1 rounded-md flex items-center gap-1.5"
                 >
                   {s.replace(/_/g, ' ')}
                   <button
                     onClick={() => setSymptoms(symptoms.filter(x => x !== s))}
-                    className="text-indigo-400/60 hover:text-indigo-200 transition-colors"
+                    className="text-teal-400/60 hover:text-teal-200 transition-colors"
                   >
                     ×
                   </button>
@@ -173,7 +173,7 @@ export default function Predict() {
         <button
           onClick={handlePredict}
           disabled={symptoms.length < 3 || loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium py-2.5 rounded-lg mt-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full bg-teal-600 hover:bg-teal-500 text-white text-sm font-medium py-2.5 rounded-lg mt-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {loading
             ? 'Predicting...'
@@ -190,12 +190,12 @@ export default function Predict() {
 
         {loading && (
           <div className="flex items-center justify-center py-12">
-            <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
         {result && (
-          <div className="bg-[#0d1117] border border-gray-800 rounded-xl p-6 mt-6 space-y-5">
+          <div className="bg-[#091518] border border-gray-800 rounded-xl p-6 mt-6 space-y-5">
             {/* Disease + confidence */}
             <div>
               <p className="text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
@@ -237,7 +237,7 @@ export default function Predict() {
 
             <button
               onClick={() => navigate('/report', { state: { result, symptoms } })}
-              className="w-full py-2.5 bg-[#030712] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 bg-[#020d0e] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               Generate Report
             </button>

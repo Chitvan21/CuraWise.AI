@@ -19,7 +19,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-[#030712] border-b border-gray-800/50 h-14 flex items-center px-6">
+    <nav className="bg-[#020d0e] border-b border-gray-800/50 h-14 flex items-center px-6">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-white font-semibold text-sm tracking-tight">

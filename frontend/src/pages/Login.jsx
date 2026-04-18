@@ -30,7 +30,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#020d0e] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
 
         <div className="text-center mb-8">
@@ -40,7 +40,7 @@ export default function Login() {
           <p className="text-gray-600 text-xs mt-1">AI-powered health companion</p>
         </div>
 
-        <div className="bg-[#0d1117] border border-gray-800 rounded-xl p-7">
+        <div className="bg-[#091518] border border-gray-800 rounded-xl p-7">
           <h2 className="text-base font-semibold text-white mb-1">
             {isLogin ? 'Welcome back' : 'Create an account'}
           </h2>
@@ -59,7 +59,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full bg-[#030712] border border-gray-800 text-white placeholder-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-600 transition-colors"
+                className="w-full bg-[#020d0e] border border-gray-800 text-white placeholder-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-600 transition-colors"
               />
             </div>
             <div>
@@ -72,7 +72,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full bg-[#030712] border border-gray-800 text-white placeholder-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-600 transition-colors"
+                className="w-full bg-[#020d0e] border border-gray-800 text-white placeholder-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-600 transition-colors"
               />
             </div>
 
@@ -85,7 +85,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors mt-1"
+              className="w-full py-2.5 bg-teal-600 hover:bg-teal-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors mt-1"
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign in' : 'Create account'}
             </button>

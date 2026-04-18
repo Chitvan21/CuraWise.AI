@@ -1,7 +1,7 @@
 export default function ConfidenceBar({ confidence }) {
   const color =
     confidence > 75
-      ? 'bg-indigo-500'
+      ? 'bg-teal-500'
       : confidence >= 50
       ? 'bg-yellow-500'
       : 'bg-red-500'

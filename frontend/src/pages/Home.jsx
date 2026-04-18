@@ -21,10 +21,10 @@ const features = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#030712] text-white">
+    <div className="min-h-screen bg-[#020d0e] text-white">
       {/* Hero */}
       <div className="flex flex-col items-center justify-center text-center px-6 py-32">
-        <p className="text-indigo-400 text-xs font-medium tracking-widest uppercase mb-4">
+        <p className="text-teal-400 text-xs font-medium tracking-widest uppercase mb-4">
           AI-POWERED HEALTH COMPANION
         </p>
         <h1 className="text-5xl font-bold text-white tracking-tight leading-tight max-w-2xl">
@@ -36,7 +36,7 @@ export default function Home() {
         <div className="flex gap-3 mt-10">
           <Link
             to="/predict"
-            className="bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
+            className="bg-teal-600 hover:bg-teal-500 px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
           >
             Check Symptoms
           </Link>
@@ -54,9 +54,9 @@ export default function Home() {
         {features.map(({ title, desc }) => (
           <div
             key={title}
-            className="bg-[#0d1117] border border-gray-800 rounded-xl p-5"
+            className="bg-[#091518] border border-gray-800 rounded-xl p-5"
           >
-            <div className="w-2 h-2 rounded-full bg-indigo-500 mb-4" />
+            <div className="w-2 h-2 rounded-full bg-teal-500 mb-4" />
             <h3 className="text-white text-sm font-medium mb-1.5">{title}</h3>
             <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
           </div>

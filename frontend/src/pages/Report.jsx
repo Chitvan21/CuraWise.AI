@@ -12,12 +12,12 @@ export default function Report() {
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center gap-3">
+      <div className="min-h-screen bg-[#020d0e] text-white flex flex-col items-center justify-center gap-3">
         <h2 className="text-base font-semibold text-gray-300">No prediction data found</h2>
         <p className="text-sm text-gray-600">Please run a prediction first to generate a report.</p>
         <Link
           to="/predict"
-          className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+          className="mt-2 px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white text-sm font-medium rounded-lg transition-colors"
         >
           Go to Predict
         </Link>
@@ -57,12 +57,12 @@ export default function Report() {
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white px-4 py-10">
+    <div className="min-h-screen bg-[#020d0e] text-white px-4 py-10">
       <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6 items-start">
 
         {/* Left — Report card */}
         <div className="flex-[3]">
-          <div className="bg-[#0d1117] border border-gray-800 rounded-xl p-8">
+          <div className="bg-[#091518] border border-gray-800 rounded-xl p-8">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h1 className="text-base font-semibold text-white">CuraWise Health Report</h1>
@@ -81,7 +81,7 @@ export default function Report() {
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="Your name"
-                  className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                  className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
                 />
               </div>
               <div>
@@ -95,7 +95,7 @@ export default function Report() {
                   placeholder="e.g. 25"
                   min={1}
                   max={120}
-                  className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                  className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
                 />
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function Report() {
             <button
               onClick={handleDownload}
               disabled={!name || !age || downloading}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 bg-teal-600 hover:bg-teal-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
             >
               {downloading ? 'Generating...' : 'Download PDF'}
             </button>
@@ -159,14 +159,14 @@ export default function Report() {
 
             <button
               onClick={() => navigate('/predict')}
-              className="w-full py-2.5 bg-[#0d1117] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 bg-[#091518] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               New Prediction
             </button>
 
             <button
               onClick={() => navigate('/chat')}
-              className="w-full py-2.5 bg-[#0d1117] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 bg-[#091518] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               Chat with AI
             </button>
