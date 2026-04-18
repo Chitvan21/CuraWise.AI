@@ -30,6 +30,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         with urllib.request.urlopen(req, timeout=10) as resp:
             return json.loads(resp.read())
     except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        logger.error("Supabase auth error %s: %s", e.code, body)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
     except Exception as e:
         logger.error("Auth verification error: %s: %s", type(e).__name__, e)
