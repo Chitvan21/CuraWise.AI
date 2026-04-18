@@ -34,6 +34,9 @@ def _get_signing_key(token: str):
     if not _jwks_cache:
         return None
 
+    logger.info("JWKS kids: %s", [k.get("kid") for k in _jwks_cache.get("keys", [])])
+    logger.info("Token kid: %s", token_kid)
+
     # Case-insensitive kid matching
     for key_data in _jwks_cache.get("keys", []):
         if key_data.get("kid", "").lower() == token_kid:
