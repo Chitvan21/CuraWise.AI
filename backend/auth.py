@@ -1,36 +1,70 @@
 import os
+import json
 import logging
+import urllib.request
 import jwt
-from jwt import PyJWKClient
+from jwt import PyJWK
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 logger = logging.getLogger(__name__)
-
 security = HTTPBearer()
 
-_jwks_client = None
+_jwks_cache = None
 
 
-def _get_jwks_client():
-    global _jwks_client
-    if _jwks_client is None:
-        supabase_url = os.getenv("SUPABASE_URL", "").rstrip("/")
-        if supabase_url:
-            _jwks_client = PyJWKClient(f"{supabase_url}/auth/v1/.well-known/jwks.json")
-    return _jwks_client
+def _fetch_jwks():
+    supabase_url = os.getenv("SUPABASE_URL", "").rstrip("/")
+    if not supabase_url:
+        return None
+    url = f"{supabase_url}/auth/v1/.well-known/jwks.json"
+    with urllib.request.urlopen(url, timeout=10) as resp:
+        return json.loads(resp.read())
+
+
+def _get_signing_key(token: str):
+    global _jwks_cache
+
+    header = jwt.get_unverified_header(token)
+    token_kid = header.get("kid", "").lower()
+
+    if _jwks_cache is None:
+        _jwks_cache = _fetch_jwks()
+
+    if not _jwks_cache:
+        return None
+
+    # Case-insensitive kid matching
+    for key_data in _jwks_cache.get("keys", []):
+        if key_data.get("kid", "").lower() == token_kid:
+            return PyJWK(key_data)
+
+    # Cache may be stale — refresh once and retry
+    _jwks_cache = _fetch_jwks()
+    for key_data in (_jwks_cache or {}).get("keys", []):
+        if key_data.get("kid", "").lower() == token_kid:
+            return PyJWK(key_data)
+
+    return None
 
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
-    client = _get_jwks_client()
-
-    if not client:
-        # SUPABASE_URL not configured — skip verification in local dev
-        return {"sub": "dev"}
 
     try:
-        signing_key = client.get_signing_key_from_jwt(token)
+        signing_key = _get_signing_key(token)
+    except Exception as e:
+        logger.error("JWKS fetch error: %s: %s", type(e).__name__, e)
+        signing_key = None
+
+    if signing_key is None:
+        supabase_url = os.getenv("SUPABASE_URL", "")
+        if not supabase_url:
+            # Local dev — skip verification
+            return {"sub": "dev"}
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No matching signing key")
+
+    try:
         payload = jwt.decode(
             token,
             signing_key.key,
@@ -40,8 +74,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
-    except jwt.InvalidTokenError:
+    except jwt.InvalidTokenError as e:
+        logger.error("Token decode error: %s: %s", type(e).__name__, e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-    except Exception as e:
-        logger.error("Token verification error: %s: %s", type(e).__name__, e)
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token verification failed")
