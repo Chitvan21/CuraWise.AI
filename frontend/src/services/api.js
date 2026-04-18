@@ -1,18 +1,29 @@
 import axios from 'axios'
+import { supabase } from '../lib/supabase'
 
-const BASE = 'http://localhost:8000'
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
-export const predictDisease = (symptoms) =>
-  axios.post(`${BASE}/api/predict`, { symptoms })
+const authHeader = async () => {
+  const { data: { session } } = await supabase.auth.getSession()
+  return session ? { Authorization: `Bearer ${session.access_token}` } : {}
+}
 
-export const generateReport = (data) =>
-  axios.post(`${BASE}/api/report`, data, { responseType: 'blob' })
+export const predictDisease = async (symptoms) => {
+  const headers = await authHeader()
+  return axios.post(`${BASE}/api/predict`, { symptoms }, { headers })
+}
+
+export const generateReport = async (data) => {
+  const headers = await authHeader()
+  return axios.post(`${BASE}/api/report`, data, { responseType: 'blob', headers })
+}
 
 export const streamChat = async (messages, model, max_tokens, onChunk, onDone) => {
   try {
+    const headers = await authHeader()
     const response = await fetch(`${BASE}/api/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...headers },
       body: JSON.stringify({ messages, model, max_tokens })
     })
 

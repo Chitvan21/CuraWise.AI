@@ -1,17 +1,18 @@
 from io import BytesIO
 from datetime import datetime
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
 from models.schemas import ReportRequest
+from auth import verify_token
 
 router = APIRouter()
 
 
 @router.post("")
-def generate_report(request: ReportRequest):
+def generate_report(request: ReportRequest, _user=Depends(verify_token)):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter)
     styles = getSampleStyleSheet()

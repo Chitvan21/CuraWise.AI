@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { supabase } from '../lib/supabase'
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -9,18 +10,11 @@ const navLinks = [
 ]
 
 export default function Navbar() {
-  const [user, setUser] = useState(() => localStorage.getItem('user'))
+  const { user } = useAuth()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const handleAuthChange = () => setUser(localStorage.getItem('user'))
-    window.addEventListener('authChange', handleAuthChange)
-    return () => window.removeEventListener('authChange', handleAuthChange)
-  }, [])
-
-  const handleLogout = () => {
-    localStorage.removeItem('user')
-    setUser(null)
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
     navigate('/')
   }
 
@@ -52,7 +46,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              <span className="text-gray-500 text-sm">{user}</span>
+              <span className="text-gray-500 text-sm">{user.email}</span>
               <div className="w-px h-4 bg-gray-800" />
               <button
                 onClick={handleLogout}

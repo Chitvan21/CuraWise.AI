@@ -1,14 +1,15 @@
 import json
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from models.schemas import ChatRequest
 from services import groq_service
+from auth import verify_token
 
 router = APIRouter()
 
 
 @router.post("")
-def chat(body: ChatRequest):
+def chat(body: ChatRequest, _user=Depends(verify_token)):
     messages = [{"role": m.role, "content": m.content} for m in body.messages]
 
     def generate():

@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from models.schemas import SymptomRequest, PredictResponse
 from services import ml_service, data_service
+from auth import verify_token
 
 router = APIRouter()
 
@@ -12,7 +13,7 @@ def get_symptoms():
 
 
 @router.post("/predict", response_model=PredictResponse)
-def predict(request: SymptomRequest):
+def predict(request: SymptomRequest, _user=Depends(verify_token)):
     if len(request.symptoms) < 3:
         raise HTTPException(
             status_code=400,
