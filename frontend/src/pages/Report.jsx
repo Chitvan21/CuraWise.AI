@@ -1,37 +1,47 @@
 import { useState } from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { generateReport } from '../services/api'
 
 export default function Report() {
-  const { state: result } = useLocation()
+  const { state } = useLocation()
+  const navigate = useNavigate()
+  const result = state?.result
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
   const [downloading, setDownloading] = useState(false)
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center gap-4">
-        <div className="text-5xl">📋</div>
-        <h2 className="text-xl font-semibold text-gray-300">No prediction data found</h2>
-        <p className="text-gray-500 text-sm">Please run a prediction first to generate a report.</p>
+      <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center gap-3">
+        <h2 className="text-base font-semibold text-gray-300">No prediction data found</h2>
+        <p className="text-sm text-gray-600">Please run a prediction first to generate a report.</p>
         <Link
           to="/predict"
-          className="mt-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-colors"
+          className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
         >
-          Go to Predict →
+          Go to Predict
         </Link>
       </div>
     )
   }
 
-  const { disease, description, precautions, workout, diets, medications } = result
+  const { disease, confidence, description, precautions, workout, diets, medications } = result
 
   const handleDownload = async () => {
     if (!name || !age) return
     setDownloading(true)
     try {
-      const { data } = await generateReport({ name, age: parseInt(age), disease, description, precautions, workout, diets, medications })
-      const url = URL.createObjectURL(new Blob([data], { type: 'application/pdf' }))
+      const response = await generateReport({
+        name,
+        age: parseInt(age),
+        disease,
+        description,
+        precautions,
+        workout,
+        diets,
+        medications,
+      })
+      const url = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
       const a = document.createElement('a')
       a.href = url
       a.download = `CuraWise_${name}_Report.pdf`
@@ -44,79 +54,129 @@ export default function Report() {
     }
   }
 
-  const Section = ({ title, items }) => (
-    <div className="bg-gray-900 rounded-xl p-4">
-      <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">{title}</h4>
-      <ul className="space-y-1.5">
-        {items.map((item, i) => (
-          <li key={i} className="text-sm text-gray-300 flex gap-2">
-            <span className="text-indigo-400">•</span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white px-4 py-10">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-1">Health Report 📄</h1>
-        <p className="text-gray-400 mb-8">Enter your details to download a PDF report.</p>
+    <div className="min-h-screen bg-[#030712] text-white px-4 py-10">
+      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6 items-start">
 
-        {/* Patient details */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Patient Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
-              className="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Age</label>
-            <input
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              placeholder="e.g. 25"
-              min={1}
-              max={120}
-              className="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition-colors"
-            />
+        {/* Left — Report card */}
+        <div className="flex-[3]">
+          <div className="bg-[#0d1117] border border-gray-800 rounded-xl p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h1 className="text-base font-semibold text-white">CuraWise Health Report</h1>
+                <p className="text-xs text-gray-600 mt-0.5">{today}</p>
+              </div>
+            </div>
+
+            {/* Patient inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
+                  Patient Name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  value={age}
+                  onChange={e => setAge(e.target.value)}
+                  placeholder="e.g. 25"
+                  min={1}
+                  max={120}
+                  className="w-full bg-[#030712] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                />
+              </div>
+            </div>
+
+            <hr className="border-gray-800 mb-6" />
+
+            {/* Disease */}
+            <div className="mb-5">
+              <p className="text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
+                Predicted Disease
+              </p>
+              <h2 className="text-xl font-bold text-white mb-1">{disease}</h2>
+              <span className="text-xs text-gray-600">Confidence: {confidence}%</span>
+            </div>
+
+            <p className="text-sm text-gray-400 leading-relaxed mb-6">{description}</p>
+
+            {/* Sections */}
+            <div className="space-y-5">
+              {[
+                { label: 'Precautions', items: precautions },
+                { label: 'Recommendations', items: workout },
+                { label: 'Diets', items: diets },
+                { label: 'Medications', items: medications },
+              ].map(({ label, items }) => (
+                <div key={label}>
+                  <p className="text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
+                    {label}
+                  </p>
+                  <ul className="space-y-1">
+                    {items.map((item, i) => (
+                      <li key={i} className="text-gray-400 text-sm flex gap-2">
+                        <span className="text-gray-700 shrink-0">–</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-8 text-xs text-gray-700 border-t border-gray-800 pt-5">
+              This is an AI-generated report for educational purposes only. Always consult a qualified doctor.
+            </p>
           </div>
         </div>
 
-        {/* Preview */}
-        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6 mb-6 space-y-5">
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Predicted Disease</p>
-            <h2 className="text-2xl font-bold text-indigo-400">{disease}</h2>
-          </div>
-          <p className="text-sm text-gray-300 leading-relaxed">{description}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            <Section title="⚠️ Precautions" items={precautions} />
-            <Section title="🏋️ Workout" items={workout} />
-            <Section title="🥗 Diets" items={diets} />
-            <Section title="💊 Medications" items={medications} />
+        {/* Right — Actions */}
+        <div className="flex-[2] lg:sticky lg:top-6">
+          <div className="space-y-2.5">
+            <button
+              onClick={handleDownload}
+              disabled={!name || !age || downloading}
+              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              {downloading ? 'Generating...' : 'Download PDF'}
+            </button>
+            {(!name || !age) && (
+              <p className="text-xs text-gray-700 text-center">Enter name and age to enable download</p>
+            )}
+
+            <button
+              onClick={() => navigate('/predict')}
+              className="w-full py-2.5 bg-[#0d1117] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+            >
+              New Prediction
+            </button>
+
+            <button
+              onClick={() => navigate('/chat')}
+              className="w-full py-2.5 bg-[#0d1117] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+            >
+              Chat with AI
+            </button>
+
+            <div className="border-l-2 border-amber-500/50 bg-amber-500/5 text-amber-200/70 text-xs p-3 rounded-r-lg mt-4">
+              Always consult a qualified medical professional before making any health decisions.
+            </div>
           </div>
         </div>
 
-        {/* Warning */}
-        <div className="bg-yellow-900/30 border border-yellow-700/50 text-yellow-300 rounded-xl px-5 py-4 mb-6 text-sm">
-          ⚕️ This is an AI-generated report. Always consult a qualified doctor for diagnosis and treatment.
-        </div>
-
-        <button
-          onClick={handleDownload}
-          disabled={!name || !age || downloading}
-          className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors"
-        >
-          {downloading ? 'Generating PDF...' : '⬇️ Download PDF Report'}
-        </button>
       </div>
     </div>
   )
