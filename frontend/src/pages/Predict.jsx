@@ -48,7 +48,7 @@ export default function Predict() {
         <p className="text-gray-500 text-sm mb-8">Select your symptoms to get an AI-powered diagnosis.</p>
 
         {/* Symptom selector card */}
-        <div className="bg-[#091518] border border-gray-800 rounded-xl p-5 mb-4">
+        <div className="glass rounded-xl p-5 mb-4">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-white font-medium">Symptoms</span>
             <span className="text-xs text-gray-600">{symptoms.length} selected</span>
@@ -87,10 +87,10 @@ export default function Predict() {
                 onFocus={() => setDropdownOpen(true)}
                 onBlur={() => setTimeout(() => setDropdownOpen(false), 150)}
                 placeholder="Type to search symptoms..."
-                className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors"
+                className="w-full glass-input rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none  transition-colors"
               />
               {dropdownOpen && filtered.length > 0 && (
-                <div className="absolute z-50 w-full bg-[#091518] border border-gray-800 rounded-lg mt-1 max-h-60 overflow-y-auto">
+                <div className="absolute z-50 w-full glass rounded-lg mt-1 max-h-60 overflow-y-auto">
                   {filtered.map(s => (
                     <div
                       key={s}
@@ -114,7 +114,7 @@ export default function Predict() {
                 value={browseFilter}
                 onChange={e => setBrowseFilter(e.target.value)}
                 placeholder="Filter symptoms..."
-                className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-600 transition-colors mb-3"
+                className="w-full glass-input rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none  transition-colors mb-3"
               />
               <div className="max-h-56 overflow-y-auto grid grid-cols-3 gap-1.5">
                 {allSymptoms
@@ -195,7 +195,7 @@ export default function Predict() {
         )}
 
         {result && (
-          <div className="bg-[#091518] border border-gray-800 rounded-xl p-6 mt-6 space-y-5">
+          <div className="glass rounded-xl p-6 mt-6 space-y-5">
             {/* Disease + confidence */}
             <div>
               <p className="text-[10px] font-semibold tracking-widest text-gray-600 uppercase mb-2">
@@ -237,7 +237,7 @@ export default function Predict() {
 
             <button
               onClick={() => navigate('/report', { state: { result, symptoms } })}
-              className="w-full py-2.5 bg-[#020d0e] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 glass-input hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               Generate Report
             </button>

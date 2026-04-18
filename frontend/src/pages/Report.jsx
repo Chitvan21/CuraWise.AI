@@ -62,7 +62,7 @@ export default function Report() {
 
         {/* Left — Report card */}
         <div className="flex-[3]">
-          <div className="bg-[#091518] border border-gray-800 rounded-xl p-8">
+          <div className="glass rounded-xl p-8">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h1 className="text-base font-semibold text-white">CuraWise Health Report</h1>
@@ -81,7 +81,7 @@ export default function Report() {
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="Your name"
-                  className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                  className="w-full glass-input rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none  transition-colors"
                 />
               </div>
               <div>
@@ -95,7 +95,7 @@ export default function Report() {
                   placeholder="e.g. 25"
                   min={1}
                   max={120}
-                  className="w-full bg-[#020d0e] border border-gray-800 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none focus:border-gray-700 transition-colors"
+                  className="w-full glass-input rounded-lg px-3 py-2 text-sm text-white placeholder-gray-700 focus:outline-none  transition-colors"
                 />
               </div>
             </div>
@@ -159,14 +159,14 @@ export default function Report() {
 
             <button
               onClick={() => navigate('/predict')}
-              className="w-full py-2.5 bg-[#091518] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 glass hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               New Prediction
             </button>
 
             <button
               onClick={() => navigate('/chat')}
-              className="w-full py-2.5 bg-[#091518] border border-gray-800 hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 glass hover:border-gray-600 text-gray-300 text-sm font-medium rounded-lg transition-colors"
             >
               Chat with AI
             </button>

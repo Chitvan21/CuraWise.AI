@@ -66,7 +66,7 @@ export default function Chat() {
   return (
     <div className="h-screen flex flex-col bg-[#020d0e]">
       {/* Top bar */}
-      <div className="h-12 border-b border-gray-800/50 flex items-center justify-between px-4 bg-[#020d0e] shrink-0">
+      <div className="h-12 border-b border-teal-500/10 flex items-center justify-between px-4 glass-strong shrink-0">
         <span className="text-sm font-medium text-white">CuraWise AI</span>
         <div className="flex items-center gap-3">
           <button
@@ -78,7 +78,7 @@ export default function Chat() {
           <select
             value={selectedModel}
             onChange={e => setSelectedModel(e.target.value)}
-            className="bg-[#091518] border border-gray-800 text-gray-400 text-xs rounded-md px-2 py-1"
+            className="glass text-gray-400 text-xs rounded-md px-2 py-1"
           >
             {MODELS.map(m => (
               <option key={m.id} value={m.id}>{m.label}</option>
@@ -105,7 +105,7 @@ export default function Chat() {
               className={
                 msg.role === 'user'
                   ? 'self-end bg-teal-600 text-white text-sm px-4 py-2.5 rounded-2xl rounded-br-sm max-w-[60%]'
-                  : 'self-start bg-[#091518] border border-gray-800 text-gray-200 text-sm px-4 py-2.5 rounded-2xl rounded-bl-sm max-w-[70%]'
+                  : 'self-start glass text-gray-200 text-sm px-4 py-2.5 rounded-2xl rounded-bl-sm max-w-[70%]'
               }
             >
               <div className="whitespace-pre-wrap break-words">{msg.content}</div>
@@ -117,7 +117,7 @@ export default function Chat() {
         {isTyping && (
           <div className="flex flex-col items-start">
             <span className="text-[10px] text-gray-600 mb-1 font-medium tracking-wider">CURAWISE AI</span>
-            <div className="bg-[#091518] border border-gray-800 rounded-2xl rounded-bl-sm px-4 py-3">
+            <div className="glass rounded-2xl rounded-bl-sm px-4 py-3">
               <span className="inline-flex gap-1">
                 <span className="w-1.5 h-1.5 bg-gray-600 rounded-full animate-bounce [animation-delay:0ms]" />
                 <span className="w-1.5 h-1.5 bg-gray-600 rounded-full animate-bounce [animation-delay:150ms]" />
@@ -131,7 +131,7 @@ export default function Chat() {
       </div>
 
       {/* Input bar */}
-      <div className="border-t border-gray-800/50 p-4 bg-[#020d0e] shrink-0">
+      <div className="border-t border-teal-500/10 p-4 glass-strong shrink-0">
         <div className="max-w-3xl mx-auto flex gap-2 items-end">
           <textarea
             ref={textareaRef}
@@ -140,7 +140,7 @@ export default function Chat() {
             onKeyDown={handleKeyDown}
             placeholder="Ask about symptoms, medications, health tips..."
             rows={1}
-            className="flex-1 bg-[#091518] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:border-gray-700 transition-colors overflow-hidden"
+            className="flex-1 glass rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 resize-none focus:outline-none  transition-colors overflow-hidden"
           />
           <button
             onClick={handleSend}
