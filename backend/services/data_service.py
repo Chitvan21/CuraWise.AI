@@ -24,7 +24,7 @@ def get_desc(disease: str) -> str:
 def get_precautions(disease: str) -> list[str]:
     row = precautions_data[precautions_data["Disease"].str.strip() == disease.strip()]
     values = row.values[0][2:]
-    return [v for v in values if v is not None]
+    return [str(v) for v in values if pd.notna(v)]
 
 
 def get_workout(disease: str) -> list[str]:
