@@ -12,7 +12,8 @@ AI-powered health companion. Describe your symptoms, get a disease prediction, p
 - **Personalized Recommendations** — Precautions, diet, medications, and workout advice for each predicted condition
 - **AI Chat** — Streaming medical assistant powered by Groq (LLaMA 3.3 70B, LLaMA 4 Scout, LLaMA 3.1 8B)
 - **PDF Reports** — Generate and download a detailed health report with patient name and age
-- **Clean UI** — React frontend with a minimal dark design (Inter font, Tailwind CSS)
+- **Auth** — Supabase email/password authentication with JWT-protected API routes
+- **Clean UI** — Liquid glass design with ambient orbs, glow effects, and animations (Inter font, Tailwind CSS)
 
 ---
 
@@ -25,7 +26,8 @@ AI-powered health companion. Describe your symptoms, get a disease prediction, p
 | ML | scikit-learn RandomForestClassifier, pandas, NumPy |
 | LLM | Groq API (streaming SSE) |
 | PDF | ReportLab |
-| Auth | localStorage (Firebase integration planned) |
+| Auth | Supabase (email/password, JWT) |
+| Deployment | Vercel (frontend), Render (backend) |
 
 ---
 
@@ -103,6 +105,9 @@ Create a `.env` file in the project root:
 
 ```env
 GROQ_API_KEY=your_groq_api_key_here
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_supabase_anon_key
+CORS_ORIGINS=http://localhost:5173
 ```
 
 Start the API server:
@@ -116,6 +121,17 @@ uvicorn main:app --reload --port 8000
 ```bash
 cd frontend
 npm install
+```
+
+Create a `frontend/.env.local` file:
+
+```env
+VITE_API_URL=http://localhost:8000
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+```bash
 npm run dev
 ```
 
@@ -175,9 +191,22 @@ python augment_and_retrain.py
 
 ## Environment Variables
 
+**Backend** (`.env` / Render environment):
+
 | Variable | Required | Description |
 |---|---|---|
 | `GROQ_API_KEY` | Yes | Groq API key for LLM chat |
+| `SUPABASE_URL` | Yes | Supabase project URL |
+| `SUPABASE_ANON_KEY` | Yes | Supabase anon/public key |
+| `CORS_ORIGINS` | Yes | Comma-separated allowed origins (e.g. `https://curawise-ai.vercel.app`) |
+
+**Frontend** (`frontend/.env.local`):
+
+| Variable | Required | Description |
+|---|---|---|
+| `VITE_API_URL` | Yes | Backend base URL |
+| `VITE_SUPABASE_URL` | Yes | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase anon/public key |
 
 ---
 
