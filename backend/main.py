@@ -10,7 +10,7 @@ _origins_env = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost
 _explicit_origins = [o.strip() for o in _origins_env.split(",") if o.strip()]
 
 # Also allow any Vercel preview deployment for this project
-_VERCEL_PREVIEW_RE = re.compile(r"^https://curawise-ai[\w-]*\.vercel\.app$")
+_VERCEL_PREVIEW_RE = re.compile(r"^https://curawise[\w-]*\.vercel\.app$")
 
 
 def _is_allowed_origin(origin: str) -> bool:
